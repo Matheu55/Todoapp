@@ -1,22 +1,24 @@
 import { useState } from "react";
 
-const Input = ({getTarefas}) => {
-
+const Input = ({ getTarefas }) => {
     const [tarefa, setTarefa] = useState("");
-    
-    const postTarefa = async()=>{
-        try {
-            const res = await fetch("http://localhost:3000/api/tarefa", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: JSON.stringify({ content: tarefa }),
 
-            });
-            
+    const postTarefa = async () => {
+        try {
+            const res = await fetch(
+                "https://backend-phi-one-83.vercel.app/api/tarefa",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify({ content: tarefa }),
+                }
+            );
+
             const data = await res.json();
-            if(!res.ok){
+
+            if (!res.ok) {
                 throw new Error(data.message);
             }
 
@@ -24,21 +26,29 @@ const Input = ({getTarefas}) => {
             setTarefa("");
             getTarefas();
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-    }
+    };
 
-    return <div className="mt-10">
-        <input 
-            onChange={(e)=> setTarefa(e.target.value)}
-            value={tarefa} 
-            type="text" 
-            placeholder="Insira a tarefa" 
-            className="border p-2" 
-        />
-        <button onClick={postTarefa} className="p-2 border ml-3 cursor-pointer">Adicionar</button>
-    </div>;
+    return (
+        <div className="mt-10">
+            <input
+                onChange={(e) => setTarefa(e.target.value)}
+                value={tarefa}
+                type="text"
+                placeholder="Insira a tarefa"
+                className="border p-2"
+            />
+
+            <button
+                onClick={postTarefa}
+                className="p-2 border ml-3 cursor-pointer"
+            >
+                Adicionar
+            </button>
+        </div>
+    );
 };
 
-
 export default Input;
+
